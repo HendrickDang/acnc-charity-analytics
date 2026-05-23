@@ -1,7 +1,7 @@
 # Classification Visualizations
 # Rochak Bhusal
 #
-# This script creates:
+# Script purpose:
 # 1. Model accuracy comparison chart
 # 2. Confusion matrix heatmap
 

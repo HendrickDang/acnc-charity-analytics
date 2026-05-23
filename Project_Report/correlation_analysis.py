@@ -1,8 +1,8 @@
 
 # Correlation Analysis of Key Numerical Features
 # Rochak Bhusal
-#
-# This script:
+
+#  script purpose:
 # 1. Loads the final classification dataset
 # 2. Selects important numerical features
 # 3. Computes the correlation matrix
