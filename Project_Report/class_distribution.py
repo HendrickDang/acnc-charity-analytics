@@ -1,4 +1,5 @@
 # Rochak Bhusal
+
 import pandas as pd
 import matplotlib.pyplot as plt
 
@@ -35,7 +36,7 @@ plt.tight_layout()
 plt.savefig("class_distribution_bar.png", dpi=300)
 
 # Pie chart
-plt.figure(figsize=(6, 6))
+plt.figure(figsize=(6, 6)) 
 class_counts.plot(kind="pie", autopct="%1.1f%%", ylabel="")
 plt.title("Class Distribution of Charity Size")
 plt.tight_layout()
