@@ -1,0 +1,51 @@
+# Clean the target variable — Number_of_Responsible_Persons
+# Van Hoi (Hendrick) Dang
+
+import pandas as pd
+
+df = pd.read_csv("acnc_merged.csv", low_memory=False)
+
+target = "Number_of_Responsible_Persons"
+
+print(f"Rows before cleaning: {len(df):,}")
+
+# Drop 1 — zeros (data entry errors)
+n_zeros = (df[target] == 0).sum()
+df = df[df[target] > 0].copy()
+print(f"\n[DROP 1 — Zero responsible persons]")
+print(f"  Removed   : {n_zeros:,}")
+print(f"  Remaining : {len(df):,}")
+
+# Drop 2 — top 1% outliers using quantile (exact logic from notebook)
+q99 = df[target].quantile(0.99)
+print(f"\n  99th percentile (q99) : {q99}")
+n_outliers = (df[target] > q99).sum()
+df = df[df[target] <= q99].copy()
+print(f"\n[DROP 2 — Outliers above 99th percentile]")
+print(f"  Threshold : {q99}")
+print(f"  Removed   : {n_outliers:,}")
+print(f"  Remaining : {len(df):,}")
+
+# Drop 3 — missing Charity_Size
+n_missing = df["Size_Encoded"].isna().sum()
+df = df.dropna(subset=["Size_Encoded"]).copy()
+print(f"\n[DROP 3 — Missing Size_Encoded]")
+print(f"  Removed   : {n_missing:,}")
+print(f"  Remaining : {len(df):,}")
+
+print(f"\n[TARGET — after cleaning]")
+print(f"  Mean  : {df[target].mean():.2f}")
+print(f"  Std   : {df[target].std():.2f}")
+print(f"  Range : {df[target].min():.0f} - {df[target].max():.0f}")
+
+df.to_csv("acnc_final.csv", index=False)
+print(f"\n  Saved → acnc_final.csv")
+
+audit_log = [
+    {"step": "Final Step — Target cleaned + Size dropped", "rows": len(df),
+     "note": f"Removed {n_zeros:,} zeros + {n_outliers:,} outliers (q99={q99}) + {n_missing:,} missing Size"},
+]
+
+print(f"\n[AUDIT LOG]")
+for entry in audit_log:
+    print(f"  {entry['step']}: {entry['rows']:,} rows | {entry['note']}")
