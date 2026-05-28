@@ -148,8 +148,6 @@ jupyter notebook assignment2/regression_analysis.ipynb
 
 Group 2 — PRT564 Data Analytics and Visualisation, Charles Darwin University, Semester 1 2026.
 
-See [CONTRIBUTORS.md](CONTRIBUTORS.md) for individual roles and contributions.
-
 ---
 
 ## Data Source and Attribution
