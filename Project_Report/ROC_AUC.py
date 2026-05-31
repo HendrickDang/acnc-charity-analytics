@@ -5,6 +5,7 @@ from sklearn import metrics
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler, label_binarize
 import pandas as pd
@@ -22,7 +23,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_
 # binarize y for multiclass ROC
 y_test_bin = label_binarize(y_test, classes=[0, 1, 2])
 
-# scale features for Naive Bayes
+# scale features for Naive Bayes and SVM
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled  = scaler.transform(X_test)
@@ -33,10 +34,11 @@ colors = ["blue", "orange", "green"]
 classifiers = [
     ("Naive Bayes",   GaussianNB(),                                                                       X_train_scaled, X_test_scaled),
     ("Decision Tree", DecisionTreeClassifier(class_weight="balanced", random_state=0),                    X_train,        X_test),
+    ("SVM",           SVC(kernel="linear", class_weight="balanced", probability=True, random_state=0),    X_train_scaled, X_test_scaled),
     ("Random Forest", RandomForestClassifier(n_estimators=1000, class_weight="balanced", random_state=0), X_train,        X_test),
 ]
 
-fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+fig, axes = plt.subplots(1, 4, figsize=(20, 5))
 
 for ax, (name, clf, Xtr, Xte) in zip(axes, classifiers):
     clf.fit(Xtr, y_train)
