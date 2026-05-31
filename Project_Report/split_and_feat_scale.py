@@ -8,11 +8,11 @@ from sklearn.preprocessing import StandardScaler
 df = pd.read_csv("acnc_classification.csv")
 
 # split explanatory variables (X) from the response variable (y)
-X = df.drop(columns=["Charity_Size", "target"])
-y = df["target"]
+X = df.drop(columns=["Charity_Size", "target"]).values
+y = df["target"].values
 
 # split into training and test sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
 
 # scale features
 scaler = StandardScaler()

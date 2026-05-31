@@ -25,4 +25,4 @@ print("\nMissing values after filling:")
 print(df[financial_cols].isnull().sum().sum())
 
 df.to_csv("acnc_features.csv", index=False)
-print("Saved → acnc_features.csv")
+print("Saved as acnc_features.csv")
