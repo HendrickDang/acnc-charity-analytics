@@ -5,6 +5,7 @@ from sklearn import metrics
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import roc_auc_score
 import pandas as pd
 
 df = pd.read_csv("acnc_classification.csv")
@@ -22,11 +23,12 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled  = scaler.transform(X_test)
 
 # fit a SVM classifier to the training set
-model = SVC(kernel="linear", class_weight="balanced", random_state=0)
+model = SVC(kernel="linear", class_weight="balanced", probability=True, random_state=0)
 model.fit(X_train_scaled, y_train)
 
 # perform classification on the test set
 y_hat = model.predict(X_test_scaled)
+y_proba = model.predict_proba(X_test_scaled)
 
 # print performance
 print("Accuracy: %.3f%%" % (metrics.accuracy_score(y_test, y_hat)*100))
@@ -37,3 +39,5 @@ print(metrics.classification_report(y_test, y_hat, target_names=["Small", "Mediu
 
 print("Confusion Matrix:")
 print(metrics.confusion_matrix(y_test, y_hat))
+
+print("\nROC-AUC (macro ovr): %.3f" % roc_auc_score(y_test, y_proba, multi_class="ovr", average="macro"))
